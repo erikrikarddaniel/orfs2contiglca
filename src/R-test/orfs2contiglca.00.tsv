@@ -1,0 +1,4 @@
+orf	contig	domain	phylum	class	order	family	genus	species
+contig0_orf0	contig0	Bacteria	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Rhizobium	Rhizobium sp.
+contig0_orf1	contig0	Bacteria	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae		
+contig0_orf2	contig0	Bacteria	Proteobacteria	Alphaproteobacteria	SAR11			
