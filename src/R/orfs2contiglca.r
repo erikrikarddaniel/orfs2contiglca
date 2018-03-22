@@ -49,7 +49,15 @@ logmsg = function(msg, llevel='INFO') {
 }
 logmsg(sprintf("Reading %s", opt$args[1]))
 
-data <- read_tsv(opt$args[1])
+orfs <- read_tsv(opt$args[1], col_types = cols(.default = col_character()))
+
+# Contigs with only one orf, can be assigned immediately
+contigs <- orfs %>%
+  semi_join(orfs %>% group_by(contig) %>% count() %>% filter(n == 1), by = 'contig') %>%
+  select(-orf)
+
+# Delete rows we dealt with above
+orfs <- orfs %>% anti_join(contigs, by = 'contig')
 
 ranks <- str_split(opt$options$ranks, ',')[[1]] #%>% map(quo)
 rank_quos <- ranks %>% map(quo)
@@ -62,6 +70,8 @@ lca <- function(ds, rs) {
   }
   return(rank_counts)
 }
-lca(data, rank_syms) %>% print()
+rc <- lca(data, rank_syms) %>% print()
+
+data %>% distinct(contig) %>% pull(contig) %>% walk(print)
 
 logmsg("Done")
