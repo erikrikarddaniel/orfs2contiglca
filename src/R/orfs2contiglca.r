@@ -40,7 +40,7 @@ if ( opt$options$version ) {
 }
 
 logmsg = function(msg, llevel='INFO') {
-  if ( opt$verbose ) {
+  if ( opt$options$verbose ) {
     write(
       sprintf("%s: %s: %s", llevel, format(Sys.time(), "%Y-%m-%d %H:%M:%S"), msg),
       stderr()
@@ -58,6 +58,15 @@ contigs <- orfs %>%
 
 # Delete rows we dealt with above
 orfs <- orfs %>% anti_join(contigs, by = 'contig')
+
+# Loop over all remaining contigs, and add each to the contig table
+contig_taxonomy <- function(cnt) {
+  rank_syms <- ranks %>% map(rlang::sym)
+}
+handle_contig <- function(cnt) {
+  contigs <- contigs %>% union(contig_taxonomy(cnt))
+}
+orfs %>% distinct(contig) %>% walk(handle_contig)
 
 ranks <- str_split(opt$options$ranks, ',')[[1]] #%>% map(quo)
 rank_quos <- ranks %>% map(quo)
